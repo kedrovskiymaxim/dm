@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript</title>
+</head>
+<body>
+<script>
+    function format(array){
+        array = array.split(' ');
+        return array.filter(Boolean);
+    }
+    function IsNum(string){
+        return !isNaN(string)
+    }
+    function IsLetters(string){
+        return string.match("^[A-Za-zа-яА-Я]+$")
+    }
+    function IsValid(array){
+        if (array.length != 4){
+            return false;
+        }
+        return (IsNum(array[0]) && array[0] % 2 == 0 && IsLetters(array[1]) && array[1] && IsNum(array[2]) && array[2] % 2 == 0 && IsNum(array[3] && array[3] % 2 != 0))
+    }
+    function IsRepeat(variable,array){
+        for (var i = 0; i < array.length; ++i){
+            if (variable == array[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+    function Intersection(first, second){
+        var res = [];
+        for (var i = 0;i < first.length;++i){
+            for (var j = 0;j < second.length;++j){
+                if (first[i] == second[j] && !IsRepeat(first[i],res)){
+                    res.push(first[i]);
+                }
+            }
+        }
+        return res;
+    }
+    function Union(first,second) {
+        var res = [];
+        for (var i = 0;i < first.length;++i){
+            if (!IsRepeat(first[i], res)){
+                res.push(first[i]);
+            }
+        }
+        for (var i = 0;i < second.length;++i){
+            if (!IsRepeat(second[i], res)){
+                res.push(second[i]);
+            }
+        }
+        return res;
+    }
+    function SymmetricDifference(first, second){
+        var res = [];
+        var intersect = [];
+        intersect = Intersection(first, second);
+        for (var i = 0;i < first.length; ++i){
+            if (!IsRepeat(first[i], intersect)){
+                res.push(first[i]);
+                intersect.push(first[i]);
+            }
+        }
+        for (var i = 0;i < second.length; ++i){
+            if (!IsRepeat(second[i], intersect)){
+                res.push(second[i]);
+                intersect.push(second[i]);
+            }
+        }
+        return res;
+    }
+    function Substract(first,second){
+        var res = [];
+        for (var i = 0;i<first.length;++i){
+            if (!IsRepeat(first[i],res) && !IsRepeat(first[i],second)){
+                res.push(first[i]);
+            }
+        }
+        return res;
+    }
+    function Calculate(){
+        var first;
+        var second;
+        first = document.getElementById('first').value;
+        second = document.getElementById('second').value;
+        first = format(first);
+        second = format(second);
+        if (!(IsValid(first) && IsValid(second))){
+            alert("Некорректный ввод!");
+            document.myForm.reset();
+        }
+        else{
+            document.writeln("Вы ввели: <br>Первое множество: "  + first + "<br>Второе множество: " + second + "<br>");
+            document.writeln("<br>Пересечение:             " + Intersection(first, second));
+            document.writeln("<br>Объединение:             " + Union(first, second));
+            document.writeln("<br>Симметрическая разность: " + SymmetricDifference(first, second));
+            document.writeln("<br>Разность:                " + Substract(first, second));
+        }
+    }
+</script>
+<form>
+    Введите множества из чётырех элементов формата (четное - нечетное - буквы - число) <br><br>
+    Множество А <input type = 'text' id = 'first' name = ''
+                       size="20" style = position:fixed;left:130px;> <br> <br>
+    Множество Б <input type = 'text' id = 'second' name = ''
+                       size="20" style = position:fixed;left:130px;> <br> <br>
+    <input type = 'button' value = 'Рассчитать' onclick = "Calculate();"><br>
+</form>
+<p>примеры ввода</p>
+<p>нужно чтобы первый элемент был четным, второй буквой, 3 четным, 4 нечетным</p>
+
+<p>A:2134 casc 8112 8765 </p>
+<p>B:4322 casc 2134 8765 </p>
+</body>
+</html>
