@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>lab2</title>
+    <script>
+        var str;
+        //Симметричность
+        function sym(arr, size) {
+            for (var i = 0; i < size; i++) {
+                for (var j = 0; j < size; j++) {
+                    if (arr[i][j] != arr[j][i]) {
+                        document.getElementById('Symmetric').innerHTML = "нет";
+                        return false;
+                    }
+                }
+            }
+            document.getElementById('Symmetric').innerHTML = "да";
+            if (str.length > 19) {
+                str+= ", "
+            }
+            str+= "симметрична";
+            return true;
+        }
+        //Антисимметричность
+        function aSym(arr, size) {
+            for (var i = 0; i < size; i++) {
+                for (var j = 0; j < size; j++) {
+                    if (+arr[i][j] * +arr[j][i] != 0){
+                        document.getElementById('AntiSymmetric').innerHTML = "нет";
+                        return false;
+                    }
+                }
+            }
+            document.getElementById('AntiSymmetric').innerHTML = "да";
+            if (str.length > 19) {
+                str+= ", "
+            }
+            str+= "антисимметрична";
+            return true;
+        }
+        //Кососимметричность
+        function cosSym(arr, size) {
+            for (var i = 0; i < size; i++) {
+                for (var j = 0; j < size; j++) {
+                    if (arr[i][j] != -arr[j][i]) {
+                        document.getElementById('CoSymmetric').innerHTML = "нет";
+                        return false;
+                    }
+                }
+            }
+            document.getElementById('CoSymmetric').innerHTML = "да";
+            if (str.length > 19) {
+                str+= ", "
+            }
+            str+= "кососимметрична";
+            return true;
+        }
+        //Транзитивность
+        function transitive(arr, size) {
+            for (var i = 0; i < size; i++) {
+                for (var j = 0; j < size; j++) {
+                    if (multiple(arr, size, i, j) > arr[i][j]) {
+                        document.getElementById('Transitive').innerHTML = "нет";
+                        return false;
+                    }
+                }
+            }
+            document.getElementById('Transitive').innerHTML = "да";
+            if (str.length > 19) {
+                str+= ", "
+            }
+            str+= "транзитивна";
+            return true;
+        }
+        //Рефлексивность
+        function reflecsive(arr, size) {
+            for (var i = 0; i < size; i++) {
+                if (arr[i][i] != 1){
+                    document.getElementById('Reflecsive').innerHTML = "нет";
+                    return false;
+                }
+            }
+            document.getElementById('Reflecsive').innerHTML = "да";
+            str+= "рефлексивна";
+            return true;
+        }
+        //Умножение строки на столбец
+        function multiple(arr, size, x, y) {
+            for (var i = 0; i < size; i++) {
+                if (+arr[x][i] * +arr[i][y] != 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        function proverka()
+        {
+            var elements = [], temp, size, matrix = [], result = "";
+            str = "Полученная матрица ";
+            size = +document.getElementById('size').value;
+            temp = document.getElementById('elements').value;
+            for (var i = 0; i < size; i++) {
+                matrix[i] = [];
+                for (var j = 0; j < size; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+            if (temp.length > 0) {
+                temp = temp.split('\n');
+                for (var i = 0; i < temp.length; i++) {
+                    elements[i] = temp[i].split(' ');
+                    if (elements[i].length != 2) {
+                        alert ("Ошибка во вводе: " + (+i + 1) + " элемент списка не является парой");
+                        return false;
+                    }
+                }
+                for (var i = 0; i < elements.length; i++) {
+                    if (isNaN(elements[i][0]) || isNaN(elements[i][1])) {
+                        alert ("Ошибка во вводе: " + (+i + 1) + " элемент списка не является числом");
+                        return false;
+                    }
+                    if (elements[i][0] > size || elements[i][1] > size) {
+                        alert ("Ошибка во вводе: " + (+i + 1) + " элемент списка больше размерности матрицы");
+                        return false;
+                    }
+                    matrix[elements[i][0] - 1][elements[i][1] - 1] = 1;
+                }
+            }
+            for (var i = 0; i < size; i++) {
+                for (var j = 0; j < size; j++) {
+                    result += matrix[i][j] + "   ";
+                }
+                result += "\n";
+            }
+            document.getElementById('result').value = result;
+            reflecsive(matrix, size);
+            sym(matrix, size);
+            cosSym(matrix, size);
+            aSym(matrix, size);
+            transitive(matrix, size);
+            if (str.length == 19) {
+                str+= "не обладает искомыми свойствами"
+            }
+            document.getElementById('Res').innerHTML = str;
+        }
+    </script>
+    <style>
+        table.text  {
+            width:  100%; /* Ширина таблицы */
+            border-spacing: 0; /* Расстояние между ячейками */
+        }
+        table.text td {
+            width: 50%; /* Ширина ячеек */
+            vertical-align: top; /* Выравнивание по верхнему краю */
+        }
+        td.rightcol { /* Правая ячейка */
+            text-align: right; /* Выравнивание по правому краю */
+        }
+        .centre {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            margin-left: 37%;
+            width: 23%;
+            height: 15px;
+            border: 1px solid #ff8c00
+        }
+        .button {
+            width: 20%;
+            font-size: 14pt;
+            color: white;
+            background: #7F113E;
+            height: 55px;
+            padding: 10px;
+            margin-top: 15%;
+            margin-left: 10%;
+            border: 1px solid #F5C4AB;
+        }
+        .textarea{
+            display: inline-block;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ff8c00
+        }
+        .rtextarea{
+            display: inline-block;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ff8c00;
+            margin-left: 465%
+        }
+        div {
+            display: flex;
+        }
+    </style>
+
+</head>
+<body>
+<form onsubmit="proverka();return false;">
+    <p align="center">задайте размерность матрицы и введите координаты, на месте которых должны стоять единицы </p>
+    <label><input type="number" class="centre" id="size" min="1" max="7" value="5"> </label> <br> <br>
+    <table class="text">
+        <tr>
+            <td>пары координат</td>
+            <td class="rightcol">полученная матрица</td>
+        </tr>
+    </table>
+    <div>
+        <label><textarea  class="textarea" id="elements" cols="30" rows="10"></textarea></label>
+        <label><textarea class="rtextarea" readonly="readonly" id="result" cols="30" rows="10"></textarea> </label>
+    <input type="submit" class="button" id="readybtn" value="Поиск отношений">
+    </div>
+</form>
+    <span id="Res"></span> <br>
+Симметричность: <span id="Symmetric"></span> <br>
+Антисимметричность: <span id="AntiSymmetric"></span> <br>
+Кососимметричность: <span id="CoSymmetric"></span> <br>
+Транзитивность: <span id="Transitive"></span> <br>
+Рефлексивность: <span id="Reflecsive"></span> <br>
+</body>
+</html>
